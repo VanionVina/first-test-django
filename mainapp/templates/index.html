@@ -39,7 +39,7 @@
                 <ul class="nav prod-cat">
                     {% for category in global_categorys %}
                     <li>
-                            <a href="{% url 'category_detail' category.global_category.slug %}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
+                            <a href="{% url 'category_detail' category.slug %}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
                     </li>
                     {% endfor %}
 
