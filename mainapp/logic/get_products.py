@@ -1,5 +1,5 @@
 from django.contrib.admin.utils import NestedObjects
-from ..models import Category
+from mainapp.models import Category, GlobalCategory
 
 
 def get_objects_for_category(category_slug):
@@ -32,3 +32,11 @@ def get_all_products():
     products = products[models_amount:]
     return products
 
+
+def get_categorys_for_global_category(g_category_slug):
+    g_category = GlobalCategory.objects.get(slug=g_category_slug)
+    collector = NestedObjects(using='default')
+    collector.collect([g_category])
+    for index, line in enumerate(collector.data.values()):
+        if index == 1:
+            return line

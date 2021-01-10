@@ -37,9 +37,15 @@
             </header>
             <div class="panel-body">
                 <ul class="nav prod-cat">
-                    {% for category in global_categorys %}
+                    {% for category in categorys %}
                     <li>
-                            <a href="{% url 'category_detail' category.slug %}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
+                        <a href="{{ category.get_absolute_url }}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
+                        {% for sub_category in category.get_relevant_categorys %}
+                            <ul class="nav">
+                                <li><a href="{{ sub_category.get_absolute_url }}">{{ sub_category.name }}</a></li>
+                            </ul>
+                        {% endfor %}
+
                     </li>
                     {% endfor %}
 
@@ -70,7 +76,7 @@
             <div class="col-md-4">
                 <section class="panel">
                     <div>
-                        <a href="{{ product.get_absolute_url }}"><img style='width: 250px; height: 230px;' src="{{ product.image.url }}" /></a>
+                        <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" /></a>
                         <!-- <a href="#" class="adtocart">
                             <i class="fa fa-shopping-cart"></i>
                         </a> -->

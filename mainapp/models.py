@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, ContentType
+from django.contrib.admin.utils import NestedObjects
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 from django.db.models.signals import post_save
@@ -26,6 +27,17 @@ class GlobalCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def get_relevant_categorys(self):
+        collector = NestedObjects(using='default')
+        collector.collect([self])
+        for index, line in enumerate(collector.data.values()):
+            if index == 1:
+                return line
+
+
+    def get_absolute_url(self):
+        return reverse('global_category_detail', kwargs={'global_category_slug': self.slug})
+
 
 class Category(models.Model):
     global_category = models.ForeignKey(GlobalCategory, on_delete=models.CASCADE,
@@ -39,6 +51,9 @@ class Category(models.Model):
 
     def __str__(self):
         return f'{self.global_category} : {self.name}'
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'category_slug': self.slug})
 
 
 class Product(models.Model):
