@@ -28,3 +28,14 @@ class ProductDetail(View):
             'global_categorys': global_categorys,
         }
         return render(request, 'product_detail.html', context)
+
+
+class CategoryDetail(View):
+
+    def get(self, request, category_slug):
+        print(category_slug)
+        g_category = GlobalCategory.objects.get(slug=category_slug)
+        context = {
+                'g_category': g_category,
+        }
+        return render(request, 'category_detail.html', context)

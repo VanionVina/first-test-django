@@ -31,3 +31,4 @@ def get_all_products():
         products += line
     products = products[models_amount:]
     return products
+
