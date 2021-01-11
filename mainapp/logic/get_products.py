@@ -1,4 +1,5 @@
 from django.contrib.admin.utils import NestedObjects
+from django.forms import model_to_dict
 from mainapp.models import Category, GlobalCategory
 
 
@@ -40,3 +41,17 @@ def get_categorys_for_global_category(g_category_slug):
     for index, line in enumerate(collector.data.values()):
         if index == 1:
             return line
+
+
+def get_product_specif(category_slug, product_slug):
+    product = get_product(category_slug, product_slug)
+    fields = model_to_dict(product)
+    banlist = ["id", "name", "slug", "category",
+            "image", "price", "description"]
+    final = {}
+    for key, value in fields.items():
+        if key  not in banlist and value != None:
+            ver_name = product._meta.get_field(key).verbose_name
+            final[ver_name] = value
+    return final
+

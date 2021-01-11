@@ -20,8 +20,24 @@
               <div class="product_meta">
                   <span class="posted_in">
                        <strong>Categories:</strong> 
-                       <a rel="tag" href="#">{{ product.category }}</a>.
+                       <a rel="tag" href="{{ product.category.get_absolute_url}}">{{ product.category }}</a>.
                   </span>
+              </div>
+              <div>
+                <h3>Specifications</h3>
+                <table class="table">
+                    {% for key, value in spec.items  %}
+                    <tr>
+                        {% if key == "Concentration" %}
+                            <td>{{key}}</td>
+                            <td>{{value}}%</td>
+                        {% else %}
+                            <td>{{key}}</td>
+                            <td>{{value}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
               </div>
               <div class="m-bot15"> <strong>Price : </strong> <span class="pro-price">${{ product.price }}</span></div>
               <div class="form-group">

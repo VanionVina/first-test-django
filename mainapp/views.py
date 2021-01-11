@@ -24,9 +24,11 @@ class ProductDetail(View):
     def get(self, request, category_slug, product_slug):
         product = get_products.get_product(category_slug, product_slug)
         global_categorys = GlobalCategory.objects.all()
+        spec = get_products.get_product_specif(category_slug, product_slug)
         context = {
             'product': product,
             'categorys': global_categorys,
+            'spec': spec,
         }
         return render(request, 'product_detail.html', context)
 
