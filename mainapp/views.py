@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.contrib.auth.models import ContentType
 
 
+from .forms import Registration
 from .mixins import GetCategorysMixin
 from .models import Category, GlobalCategory
 from .logic import get_products
@@ -59,3 +60,12 @@ class CategoryDetail(GetCategorysMixin, View):
             'g_categorys': self.g_categorys,
         }
         return render(request, 'category_detail.html', context)
+
+class RegistrationView(View):
+
+    def get(self, request):
+        form = Registration
+        context = {
+                'form': form,
+        }
+        return render(request, 'registration//registration.html', context)

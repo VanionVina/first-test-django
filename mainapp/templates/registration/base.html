@@ -28,40 +28,9 @@
         </div>
       </div>
     </div>
-
-<div class="navbar navbar-static-tope">
-        {% if user.is_authenticated %}
-            <p>Username: {{ user.username }}</p>
-            <p>Phone: {{ user.customer.phone }}</p>
-        {% endif %}
-</div>
-
     
 <div class="container bootdey">
-    <div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading">
-                Category's
-            </header>
-            <div class="panel-body">
-                <ul class="nav prod-cat">
-                    {% for category in g_categorys %}
-                    <li>
-                        <a href="{{ category.get_absolute_url }}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
-                        {% for sub_category in category.get_relevant_categorys %}
-                            <ul class="nav">
-                                <li><a href="{{ sub_category.get_absolute_url }}">{{ sub_category.name }}</a></li>
-                            </ul>
-                        {% endfor %}
-
-                    </li>
-                    {% endfor %}
-
-                </ul>
-            </div>
-        </section>
-   </div>
-        {% block content %}
+    {% block content %}
     <div class="col-md-9">
             <!-- <section class="panel">
                 <div class="panel-body">
@@ -107,10 +76,5 @@
         {% endblock %}
 </div>
 
-<!-- <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript"> -->
-	
-</script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+{% extends 'registration/base.html' %}
+{% block content %}
+
+<h1>Log in</h1>
+
+<div>
+    <form method="post">   
+        {% csrf_token %}
+        <input type="hidden" name="next" value={% url 'index' %}>
+        {{ form.as_table }}
+        <br>
+        <button type="submit">Log in</button>
+    </form>
+</div>
+{% endblock content %}
