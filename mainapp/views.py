@@ -133,7 +133,7 @@ class ChangeCartProductAmount(GetCurtMixin, View):
     def post(self, request, cart_product_id):
         product = CartProduct.objects.get(id=cart_product_id)
         amount = request.POST.get('amount')
-        product.total_price = int(product.get_product().price) * int(amount)
+        product.total_price = float(product.get_product().price) * float(amount)
         product.amount = amount
         product.save()
         cart_logic.cart_recalc(self.cart)
