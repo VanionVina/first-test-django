@@ -188,10 +188,10 @@ class Cart(models.Model):
 
 class CartProduct(models.Model):
     user = models.ForeignKey(Customer, verbose_name='Customer', on_delete=models.CASCADE)
+    to_cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product_id = models.PositiveIntegerField()
     amount = models.PositiveIntegerField(verbose_name='Amount')
     total_price = models.PositiveIntegerField(verbose_name='Total price')
-    to_cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Cart product: {self.product_id}'

@@ -1,36 +1,64 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>Test test com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'for_index.css' %}" rel="stylesheet">
-</head>
-<body>
 
-   <div class="navbar navbar-default navbar-static-top" id="nav-top">
-      <div class="container">
-       <div class="col-sm-1 collapse navbar-collapse" id="navbar-ex-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="{% url 'index' %}">Home</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-1 collapse navbar-collapse" id="navbar-lgn-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#">Log Out</a></li>              
-            <li><a href="#">My Account</a></li>
-          </ul>
-        </div>
-      </div>
+</head>
+
+<body>
+<nav class="navbar-static-top  navbar-inverse" style='position: static; top: 0px;'>
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'index' %}">Change this</a>
     </div>
-    
+    <div>
+        <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+            <li><a href='#'>{{ user.username }}</a></li>
+            <li><a href='{% url "logout" %}'>Logout</a></li>
+        {% else %}
+            <li><a href='{% url "login" %}'>Login</a></li>
+        {% endif %}
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>    
+
 <div class="container bootdey">
-    {% block content %}
+    <div class="col-md-3">
+        <section class="panel">
+            <header class="panel-heading">
+                Category's
+            </header>
+            <div class="panel-body">
+                <ul class="nav prod-cat">
+                    {% for category in g_categorys %}
+                    <li>
+                        <a href="{{ category.get_absolute_url }}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
+                        {% for sub_category in category.get_relevant_categorys %}
+                            <ul class="nav">
+                                <li><a href="{{ sub_category.get_absolute_url }}">{{ sub_category.name }}</a></li>
+                            </ul>
+                        {% endfor %}
+
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </section>
+   </div>
+        {% block content %}
     <div class="col-md-9">
             <!-- <section class="panel">
                 <div class="panel-body">
@@ -76,5 +104,10 @@
         {% endblock %}
 </div>
 
+<!-- <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"> -->
+	
+</script>
 </body>
 </html>

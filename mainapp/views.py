@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import View
-from django.contrib.auth.models import ContentType
-
+from django.contrib.auth.models import ContentType, User
+from django.contrib import messages
 
 from .forms import Registration
 from .mixins import GetCategorysMixin
-from .models import Category, GlobalCategory
+from .models import Category, GlobalCategory, Customer
 from .logic import get_products
 
 
@@ -69,3 +70,18 @@ class RegistrationView(View):
                 'form': form,
         }
         return render(request, 'registration//registration.html', context)
+
+    def post(self, request):
+        form = Registration(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            phone = request.POST.get('phone')
+            address = request.POST.get('address')
+            user = User.objects.create(username=username)
+            user.set_password(password)
+            user.customer.phone = phone
+            user.customer.address = address
+            user.save()
+            messages.add_message(request, messages.INFO, 'Succefully register, now log in')
+            return HttpResponseRedirect(reverse('login'))

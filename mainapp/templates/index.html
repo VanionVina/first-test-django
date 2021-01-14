@@ -1,58 +1,9 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
+{% extends 'base.html' %}
 
-    <meta charset="utf-8">
-    <title>Test test com</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'for_index.css' %}" rel="stylesheet">
 
-</head>
-
-<body>
-<nav class="navbar-static-top  navbar-inverse" style='position: static; top: 0px;'>
-    <div class="container-fluid">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#">Change this</a>
-    </div>
-    <div>
-        <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="{% url 'index' %}">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-        </ul>
-    </div>
-    </div>
-</nav>    
-
-<div class="container bootdey">
-    <div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading">
-                Category's
-            </header>
-            <div class="panel-body">
-                <ul class="nav prod-cat">
-                    {% for category in g_categorys %}
-                    <li>
-                        <a href="{{ category.get_absolute_url }}"><i class="fa fa-angle-right"></i> {{ category.name }}</a>
-                        {% for sub_category in category.get_relevant_categorys %}
-                            <ul class="nav">
-                                <li><a href="{{ sub_category.get_absolute_url }}">{{ sub_category.name }}</a></li>
-                            </ul>
-                        {% endfor %}
-
-                    </li>
-                    {% endfor %}
-
-                </ul>
-            </div>
-        </section>
-   </div>
         {% block content %}
+        {% include 'categorys_left.html' %}
+
     <div class="col-md-9">
             <!-- <section class="panel">
                 <div class="panel-body">
@@ -96,12 +47,3 @@
         </div>
     </div>
         {% endblock %}
-</div>
-
-<!-- <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript"> -->
-	
-</script>
-</body>
-</html>
