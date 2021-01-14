@@ -194,7 +194,8 @@ class CartProduct(models.Model):
     product_slug = models.CharField(max_length=255, null=True)
     product_category = models.CharField(max_length=255, null=True)
     amount = models.PositiveIntegerField(verbose_name='Amount', default=1)
-    total_price = models.DecimalField(verbose_name='Total price', max_digits=100, decimal_places=2)
+    total_price = models.DecimalField(verbose_name='Total price', null=True, blank=True,
+                                      max_digits=100, decimal_places=2)
 
     def get_product(self):
         category = Category.objects.get(slug=self.product_category)
@@ -209,4 +210,4 @@ class CartProduct(models.Model):
                 return product
 
     def __str__(self):
-        return f'Cart product: {self.product_slug}'
+        return f'Cart product: {self.product_slug}; For cart: {self.to_cart.id}'

@@ -4,6 +4,15 @@
 
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <div class="container bootstrap snippets bootdey">
+    <div class='col-md-3 content panel panel-info panel-shadow'>
+        <h2 class='text text-center'>Final info</h2>
+        <br>
+        <h4 class='text text-center'>Total products: {{ cart.final_amount }}</h4>
+        <hr>
+        <h4 class='text text-center'>Final price: <strong>{{ cart.final_price }}$</strong></h4>
+        <p class='text text-center'><button class='button btn-danger btn-lg btn-block'>Buy all</button></p>
+        <br>
+    </div>
     <div class="col-md-9 col-sm-8 content">
         <div class="row">
             <div class="col-md-12">

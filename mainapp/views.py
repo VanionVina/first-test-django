@@ -98,13 +98,14 @@ class AddToCart(GetCurtMixin, View):
         customer = Customer.objects.get(user=user)
         category = Category.objects.get(slug=category_slug)
         product = get_products.get_product(category_slug=category.slug, product_slug=product_slug)
-        cart_product, created = CartProduct.objects.get_or_create(user=customer, to_cart=self.cart, 
-                                                product_slug=product.slug, total_price=product.price,
-                                                product_category=product.category.slug,
-                                                )
+        cart_product, created = CartProduct.objects.get_or_create(
+            user=customer, to_cart=self.cart, product_slug=product.slug,
+            product_category=product.category.slug,
+            )
         if created:
+            cart_product.total_price = product.price
             self.cart.products.add(cart_product)
-            self.cart.save()
+            cart_product.save()
         cart_logic.cart_recalc(self.cart)
         return HttpResponseRedirect(reverse('cart_detail'))
 
@@ -133,6 +134,7 @@ class ChangeCartProductAmount(GetCurtMixin, View):
     def post(self, request, cart_product_id):
         product = CartProduct.objects.get(id=cart_product_id)
         amount = request.POST.get('amount')
+        product.amount = amount
         product.total_price = float(product.get_product().price) * float(amount)
         product.amount = amount
         product.save()
