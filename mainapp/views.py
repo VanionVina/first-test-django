@@ -66,6 +66,7 @@ class CategoryDetail(GetCurtMixin, GetCategorysMixin, View):
         }
         return render(request, 'category_detail.html', context)
 
+
 class RegistrationView(View):
 
     def get(self, request):
