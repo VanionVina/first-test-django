@@ -19,5 +19,7 @@ class GetCurtMixin(View):
             if not cart:
                 cart = Cart.objects.create(owner=customer)
             self.cart = cart
+        else:
+            self.cart = None
 
         return super().dispatch(request, *args, **kwargs)

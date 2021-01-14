@@ -79,6 +79,10 @@ class RegistrationView(View):
         form = Registration(request.POST)
         if form.is_valid():
             username = request.POST.get('username')
+            user_name_is_used = User.objects.filter(username=username).first()
+            if user_name_is_used:
+                messages.add_message(request, messages.INFO, 'This username is taken')
+                return render(request, 'registration//registration.html', context={'form': form})
             password = request.POST.get('password')
             phone = request.POST.get('phone')
             address = request.POST.get('address')
@@ -94,6 +98,9 @@ class RegistrationView(View):
 class AddToCart(GetCurtMixin, View):
 
     def get(self, request, product_slug, category_slug):
+        if not request.user.is_authenticated:
+            messages.add_message(request, messages.INFO, 'Log in to do this')
+            return HttpResponseRedirect(reverse('login'))
         user = User.objects.get(username=request.user.username)
         customer = Customer.objects.get(user=user)
         category = Category.objects.get(slug=category_slug)

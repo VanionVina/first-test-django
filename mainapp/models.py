@@ -184,8 +184,13 @@ class Cart(models.Model):
     products = models.ManyToManyField('CartProduct', blank=True)
     ordered = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        if not self.final_amount:
+            self.final_amount=0
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f'Cart: {self.id}'
+        return f'Cart: {self.id} | Owner: {self.owner}'
 
 
 class CartProduct(models.Model):
@@ -210,4 +215,4 @@ class CartProduct(models.Model):
                 return product
 
     def __str__(self):
-        return f'Cart product: {self.product_slug}; For cart: {self.to_cart.id}'
+        return f'Cart product: {self.product_slug} | For cart: {self.to_cart.id}'
