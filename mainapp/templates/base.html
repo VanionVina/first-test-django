@@ -26,6 +26,9 @@
             {% if user.is_authenticated %}
                 <li><a href='#'>{{ user.username }}</a></li>
                 <li><a href='{% url 'logout' %}'>Logout</a></li>
+                <li><a href='{% url "cart_detail" %}'>
+                    Cart <span class='badge'>{{ cart.final_amount }}</span>
+                </a></li>
             {% else %}
                 <li><a href='{% url "login" %}'>Log in</a></li>
                 <li><a href='{% url "registration" %}'>Sign in</a></li>

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippets bootdey">
+    <div class="col-md-9 col-sm-8 content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info panel-shadow">
+                    <div class="panel-body"> 
+                        <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Name</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in cart.products.all %}
+                                <tr>
+                                    <td><img src="{{ product.get_product.image.url }}" style='width: 200px; height: 200px;' class="img-cart"></td>
+                                    <td><strong>{{ product.get_product.name }}</strong></td>
+                                    <td>
+                                    <form class="form-inline" method='POST' action="{% url 'change_amount' product.id %}">
+                                        {% csrf_token %}
+                                        <input min=1 type='number' class="form-control" name='amount' type="text" value="{{ product.amount }}">
+                                        <button type='sumbit' rel="tooltip" class="btn btn-default"><i class="fa fa-pencil"></i></button></a>
+                                        <a href="{% url 'del_cart_product' product.id %}" class="btn btn-primary"><i class="fa fa-trash-o"></i></a>
+                                    </form>
+                                    </td>
+                                    <td>{{ product.get_product.price }}$</td>
+                                    <td>{{ product.total_price }}$</td>
+                                </tr>
+                                {% endfor %}
+                               <!-- <tr>
+                                    <td colspan="6">&nbsp;</td>
+                                </tr> -->
+                               <tr>
+                                    <td colspan="4" class="text-right"><strong>Final price:</strong></td>
+                                    <td>{{ cart.final_price }}$</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <a href="#" class="btn btn-primary pull-right">Next</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

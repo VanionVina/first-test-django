@@ -176,11 +176,13 @@ def save_user_customer(sender, instance, **kwargs):
 
 
 class Cart(models.Model):
-    final_price = models.IntegerField(null=True, blank=True,
+    final_price = models.DecimalField(null=True, blank=True, max_digits=100, decimal_places=2,
                                       verbose_name='Final price')
     final_amount = models.IntegerField(null=True, blank=True,
                                        verbose_name='Total amount')
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='Owner')
+    products = models.ManyToManyField('CartProduct', blank=True)
+    ordered = models.BooleanField(default=False)
 
     def __str__(self):
         return f'Cart: {self.id}'
@@ -189,9 +191,22 @@ class Cart(models.Model):
 class CartProduct(models.Model):
     user = models.ForeignKey(Customer, verbose_name='Customer', on_delete=models.CASCADE)
     to_cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    product_id = models.PositiveIntegerField()
-    amount = models.PositiveIntegerField(verbose_name='Amount')
-    total_price = models.PositiveIntegerField(verbose_name='Total price')
+    product_slug = models.CharField(max_length=255, null=True)
+    product_category = models.CharField(max_length=255, null=True)
+    amount = models.PositiveIntegerField(verbose_name='Amount', default=1)
+    total_price = models.DecimalField(verbose_name='Total price', max_digits=100, decimal_places=2)
+
+    def get_product(self):
+        category = Category.objects.get(slug=self.product_category)
+        collector = NestedObjects(using='default')
+        collector.collect([category])
+        products = []
+        for line in collector.data.values():
+            products += line
+        products = products[1:]
+        for product in products:
+            if product.slug == self.product_slug:
+                return product
 
     def __str__(self):
-        return f'Cart product: {self.product_id}'
+        return f'Cart product: {self.product_slug}'
