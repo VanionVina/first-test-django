@@ -149,3 +149,11 @@ class ChangeCartProductAmount(GetCurtMixin, View):
         cart_logic.cart_recalc(self.cart)
         return HttpResponseRedirect(reverse('cart_detail'))
 
+
+class UserProfile(GetCurtMixin, View):
+
+    def get(self, request):
+        context = {
+                'cart': self.cart,
+                }
+        return render(request, 'user_profile.html', context)

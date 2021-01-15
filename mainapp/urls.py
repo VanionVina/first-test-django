@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .views import (
-    Index, ProductDetail, 
+    Index, ProductDetail,
     GlobalCategoryDetail,
     CategoryDetail,
     RegistrationView,
@@ -10,6 +10,7 @@ from .views import (
     CartView,
     DeleteCartProduct,
     ChangeCartProductAmount,
+    UserProfile,
     )
 
 
@@ -25,4 +26,5 @@ urlpatterns = [
     path('cart-detail/', CartView.as_view(), name='cart_detail'),
     path('del-cart-product/<str:cart_product_id>/', DeleteCartProduct.as_view(), name='del_cart_product'),
     path('change-amount/<str:cart_product_id>/', ChangeCartProductAmount.as_view(), name='change_amount'),
+    path('user-profile/', UserProfile.as_view(), name='user_profile'),
 ]

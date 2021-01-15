@@ -38,8 +38,9 @@
                                     <form class="form-inline" method='POST' action="{% url 'change_amount' product.id %}">
                                         {% csrf_token %}
                                         <input min=1 type='number' class="form-control" name='amount' type="text" value="{{ product.amount }}">
-                                        <button type='sumbit' rel="tooltip" class="btn btn-default"><i class="fa fa-pencil"></i></button></a>
-                                        <a href="{% url 'del_cart_product' product.id %}" class="btn btn-primary"><i class="fa fa-trash-o"></i></a>
+                                        <button type='sumbit' rel="tooltip" class="button btn-primary">Chg</button></a>
+
+                                <a href="{% url 'del_cart_product' product.id %}"><button class="button btn-danger">Del</button></a>
                                     </form>
                                     </td>
                                     <td>{{ product.get_product.price }}$</td>
