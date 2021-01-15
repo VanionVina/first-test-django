@@ -12,3 +12,5 @@ admin.site.register(GolfClub)
 admin.site.register(Customer)
 admin.site.register(Cart)
 admin.site.register(CartProduct)
+
+admin.site.register(Order)

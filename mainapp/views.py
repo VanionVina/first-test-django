@@ -1,12 +1,14 @@
+from decimal import Decimal
+
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
 from django.contrib.auth.models import ContentType, User
 from django.contrib import messages
 
-from .forms import Registration
+from .forms import Registration, OrderForm
 from .mixins import GetCategorysMixin, GetCurtMixin
-from .models import Category, GlobalCategory, Customer, Cart, CartProduct
+from .models import Category, GlobalCategory, Customer, Cart, CartProduct, Order
 from .logic import get_products, cart_logic
 
 
@@ -143,7 +145,7 @@ class ChangeCartProductAmount(GetCurtMixin, View):
         product = CartProduct.objects.get(id=cart_product_id)
         amount = request.POST.get('amount')
         product.amount = amount
-        product.total_price = float(product.get_product().price) * float(amount)
+        product.total_price = Decimal(product.get_product().price) * Decimal(amount)
         product.amount = amount
         product.save()
         cart_logic.cart_recalc(self.cart)
@@ -153,7 +155,40 @@ class ChangeCartProductAmount(GetCurtMixin, View):
 class UserProfile(GetCurtMixin, View):
 
     def get(self, request):
+        customer = Customer.objects.get(user=request.user)
+        orders = Order.objects.filter(user=customer)
         context = {
                 'cart': self.cart,
+                'orders': orders,
                 }
         return render(request, 'user_profile.html', context)
+
+
+class OrderView(GetCurtMixin, View):
+
+    def get(self, request):
+        if self.cart.final_amount == 0:
+            return HttpResponseRedirect(reverse('cart_detail'))
+        form = OrderForm
+        context = {
+            'cart': self.cart,
+            'form': form,
+        }
+        return render(request, 'create_order.html', context)
+    
+    def post(self, request):
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            customer = Customer.objects.get(user=request.user)
+            cart = self.cart
+            first_name = request.POST.get('first_name')
+            address = request.POST.get('address')
+            phone = request.POST.get('phone')
+            order = Order.objects.create(
+                user=customer, cart=cart, first_name=first_name,
+                address=address, phone=phone,
+                )
+            order.save()
+            self.cart.ordered = True
+            self.cart.save()
+            return HttpResponseRedirect(reverse('user_profile'))

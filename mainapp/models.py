@@ -186,7 +186,9 @@ class Cart(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.final_amount:
-            self.final_amount=0
+            self.final_amount = 0
+        if not self.final_price:
+            self.final_price = 0
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -219,11 +221,18 @@ class CartProduct(models.Model):
 
 
 class Order(models.Model):
+    STATUS_CHOICES = (
+        ('new', 'MNew'),
+        ('confirmed', 'Confirmed'),
+        ('delivered', 'Delivered')
+    )
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     address = models.CharField(max_length=100)
     phone = models.IntegerField()
-    status = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_created=True, auto_now=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='new')
 
     def __str__(self):
-        return self.cart
+        return f'Order to cart: {self.cart.id}'

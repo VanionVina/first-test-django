@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
+{% if cart.final_amount %}
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <div class="container bootstrap snippets bootdey">
     <div class='col-md-3 content panel panel-info panel-shadow'>
@@ -9,8 +9,12 @@
         <br>
         <h4 class='text text-center'>Total products: {{ cart.final_amount }}</h4>
         <hr>
-        <h4 class='text text-center'>Final price: <strong>{{ cart.final_price }}$</strong></h4>
-        <p class='text text-center'><button class='button btn-danger btn-lg btn-block'>Buy all</button></p>
+        <h4 class='text text-center'>
+            Final price: <strong>{{ cart.final_price }}$</strong>
+        </h4>
+        <p class='text text-center'>
+            <a href='{% url "create_order" %}'><button class='button btn-danger btn-lg btn-block'>Buy all</button></a>
+        </p>
         <br>
     </div>
     <div class="col-md-9 col-sm-8 content">
@@ -60,10 +64,12 @@
                     </div>
                 </div>
                 </div>
-                <a href="#" class="btn btn-primary pull-right">Next</a>
             </div>
         </div>
     </div>
 </div>
+{% else %}
+    <h1>You have nothing to buy. Go and add something</h1>
+{% endif %}
 
 {% endblock %}
