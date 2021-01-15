@@ -216,3 +216,14 @@ class CartProduct(models.Model):
 
     def __str__(self):
         return f'Cart product: {self.product_slug} | For cart: {self.to_cart.id}'
+
+
+class Order(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
+    phone = models.IntegerField()
+    status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.cart

@@ -5,3 +5,4 @@ class Registration(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     phone = forms.IntegerField()
     address = forms.CharField()
+
